@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {
+  HashRouter,
+  Route,
+  Routes,
+} from 'react-router-dom';
+import { routeConfig } from './config';
+import { AppLayout } from './layouts';
+import { ContentHeaderProvider } from './providers';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      {/* 
+      this context should enable us to dynamically 
+      change the ContentHeader at any level of the app 
+      */}
+      <ContentHeaderProvider>
+        <AppLayout date-testid='app-layout'>
+          <Routes>
+            {routeConfig.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+                errorElement={route.errorElement}
+              />
+            ))}
+          </Routes>
+        </AppLayout>
+      </ContentHeaderProvider>
+    </HashRouter>
   );
 }
 
